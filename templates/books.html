@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block titile %}
+KnowBooks|Books
+{% endblock %}
+
+{% block body %}
+  {% if session.log: %}
+    <div class="searchcontainer">
+      <form action="{{url_for('search')}}", method="POST", class="form-inline my-2 my-lg-0">
+        <div class = "search-wrapper">          
+          <div class="top-side"> 
+            <div class="search-option-wrapper">
+              <input type="radio" name="options" id="option1" value="isbn"> ISBN </input><br>
+            </div>
+            <div class="search-option-wrapper">
+              <input type="radio" name="options" id="option2" value="title"> Title </input><br>
+            </div>
+            <div class="search-option-wrapper">
+              <input type="radio" name="options" id="option3" value="author"> Author </input><br>
+            </div>
+            <div class="search-option-wrapper">
+              <input type="radio" name="options" id="option3" value="year"> Year </input><br>
+            </div>
+          </div>
+          
+          <div class="bottom-side">
+            <div>
+              <input class="form-control mr-sm-2" type="search" name = "search" placeholder="Search books here" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+            <div class="bookscontainer">
+              <div class="col-5">
+                <h1> <u>Title</u> </h1>
+              </div>
+              <div class="col-5">
+                <h1> <u>Author</u> </h1>
+              </div>
+              <div class="col-2">
+                <h1> <u>Links</u> </h1>
+              </div>
+    </div>
+      
+      {% for book in books %}
+          
+            <div class="bookscontainer">
+                <div class="col-5">
+                  {{book.title}}
+                </div>
+                <div class="col-5">
+                  {{book.author}}
+                </div>
+                <div class="col-2">
+                  <a href="{{url_for('book', book_isbn=book.isbn)}}"><button class="btn btn-outline-success my-2 my-sm-0" style="background-color:lightgray;" type="submit">Know more</button> </a>
+                </div>
+            </div>
+            
+         
+
+      {% endfor %}
+      
+
+
+  {% else: %}
+    <h3>You need to <a href="/login"> login</a> to access this page</h3>
+
+  {% endif %}
+{% endblock %}

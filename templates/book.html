@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block titile %}
+KnowBooks|Book
+{% endblock %}
+
+{% block body %}
+<div class=center-my-body>
+        <h1 style="color:crimson; font-size: xx-large;"> <u>{{book.title}}</u></h1><br>
+        <img src={{bookcover}} alt="">
+        <li> <span class="bold-my"> ISBN: </span> {{book.isbn}}</li>
+        <li> <span class="bold-my"> Title:</span> {{book.title}}</li>
+        <li> <span class="bold-my"> Author:</span> {{book.author}}</li>
+        <li> <span class="bold-my"> Year of publish:</span> {{book.year}}</li>  
+       
+        <span class="bold-my">Ratings count:</span> {{work_ratings_count}}
+        <span class="bold-my">Reviews count:</span> {{work_reviews_count}} <br>
+        <span class="bold-my">Average rating:</span> <span style="color: brown;">{{average_rating}} out of 5</span> 
+</div>
+
+
+    <form class="form-review-container" action="{{url_for('book', book_isbn=book.isbn)}}", method="POST">    
+        <div>
+            <h2> <u>Feel free to rate and review this book</u></h2>
+            <h4>Rating</h4>
+            <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+            </fieldset><br><br>
+
+        </div>
+        <div>
+        
+            <div>
+                <h4>Review</h4>
+            </div>
+            <div class="review-container "> 
+                <textarea name="review" id="text-review" cols="80" rows="10" placeholder="Submit your review here(optional)"></textarea>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 30ch;">Submit</button>
+
+        </div>
+
+    </form>
+    <h1 style="font-size: 2em;"><u>Reviews</u></h1>
+    {% for reviews in reviews_book %}
+    <div> 
+        <div class=reviewcontainer>
+            
+            <div style="color: brown;"><u>{{reviews.fullname}}</u></div>       
+            <div>Rating: {{reviews.rating}} stars</div>
+            <div>Review: {{reviews.review}}</div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+
+{% endblock %}
