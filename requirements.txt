@@ -2,5 +2,5 @@ Flask
 Flask-Session
 psycopg2-binary
 SQLAlchemy
-passlib
+passlib==1.7.2
 Werkzeug==0.16.0
