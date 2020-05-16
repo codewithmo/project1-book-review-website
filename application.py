@@ -116,7 +116,7 @@ def search():
         return render_template("searchresult.html", books_srch=books_srch)
 
     elif option=="author":
-        books_srch = db.execute("SELECT * FROM books WHERE author ILIKE '%' + :author + '%' ",{"author": '%' + search + '%'}).fetchall()
+        books_srch = db.execute("SELECT * FROM books WHERE author ILIKE :author ",{"author": '%' + search + '%'}).fetchall()
         if books_srch is None:
             flash("No matches found", 'danger')
             return render_template("books.html")
