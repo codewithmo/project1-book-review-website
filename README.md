@@ -57,6 +57,9 @@ CREATE TABLE reviews(
     );
 
 ```
+`Note:`After Creating tables it is important to import the data to database
+
+**Import:** Provided for you in this project is a file called `books.csv`, which is a spreadsheet in CSV format of 5000 different books. Each one has an ISBN number, a title, an author, and a publication year. In a Python file called `import.py` separate from your web application. Run this program by running `python3 import.py` to import the books into your database.
  
 
 ### **Goodreads API**
@@ -83,6 +86,7 @@ Now its time to run the application by following the below given details:
 If you navigate to the URL provided by `flask`, you should see home page. Below I am attaching my screencast of this project1
 
 **Screencast of this project-** [https://youtu.be/CzS5XHnmkRA](https://youtu.be/CzS5XHnmkRA)
+
 
 
 
