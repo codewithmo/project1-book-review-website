@@ -88,7 +88,7 @@ def login():
 def logout():
     session.clear()
     flash("You have successfuly logged out, press on Knowbooks to return home page", "success")
-    return render_template("loginpage.html")
+    return render_template("home.html")
                     
 #books from database                
 @app.route("/books")                    
@@ -103,28 +103,34 @@ def search():
     search = request.form.get("search")   
     if option=="isbn":        
         books_srch = db.execute("SELECT * FROM books WHERE isbn= :isbn", {"isbn": search}).fetchall()        
-        if books_srch is None:
+        if db.execute("SELECT * FROM books WHERE isbn= :isbn", {"isbn": search}).rowcount==0:
             flash("No matches found", 'danger')
             return render_template("books.html")
         return render_template("searchresult.html", books_srch=books_srch)
     
     elif option=="title":        
         books_srch = db.execute("SELECT * FROM books WHERE title ILIKE :title ",{"title": '%' + search + '%'}).fetchall()
-        if books_srch is None:
+        if db.execute("SELECT * FROM books WHERE title ILIKE :title ",{"title": '%' + search + '%'}).rowcount==0:
             flash("No matches found", 'danger')
             return render_template("books.html")
         return render_template("searchresult.html", books_srch=books_srch)
 
     elif option=="author":
         books_srch = db.execute("SELECT * FROM books WHERE author ILIKE :author ",{"author": '%' + search + '%'}).fetchall()
-        if books_srch is None:
+        if db.execute("SELECT * FROM books WHERE author ILIKE :author ",{"author": '%' + search + '%'}).rowcount==0:
             flash("No matches found", 'danger')
             return render_template("books.html")
         return render_template("searchresult.html", books_srch=books_srch)
 
     elif option=="year":
+        try:
+            search = int(search)
+        except ValueError:
+            flash("Enter only numbers in year field","danger")
+            return redirect(url_for('books'))
         books_srch = db.execute("SELECT * FROM books WHERE year=:year ",{"year": search}).fetchall()
-        if books_srch is None:
+        
+        if db.execute("SELECT * FROM books WHERE year=:year ",{"year": search}).rowcount==0:
             flash("No matches found", 'danger')
             return render_template("books.html")
         return render_template("searchresult.html", books_srch=books_srch)
@@ -158,8 +164,12 @@ def book(book_isbn):
         else:
             flash("You have already reviewed this book","danger")
             return redirect(url_for('book', book_isbn=book.isbn))
-    
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "O9vj9DLjWD0WSAXiagbJw", "isbns": book_isbn})
+
+
+    if not os.getenv("GOODREADS_KEY"):
+        raise RuntimeError("GOODREADS_KEY is not set")
+    key = os.getenv("GOODREADS_KEY")
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": book_isbn})
     data = res.json()
     work_ratings_count = data["books"][0]["work_ratings_count"]
     work_reviews_count = data["books"][0]["work_reviews_count"]
@@ -177,8 +187,12 @@ def book_api(book_isbn):
     if book is None:
         return jsonify({"error": "ISBN not found"}), 404
 
+        
+    if not os.getenv("GOODREADS_KEY"):
+        raise RuntimeError("GOODREADS_KEY is not set")
+    key = os.getenv("Goodreads_key")
     #Getting data from goodreads api
-    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "O9vj9DLjWD0WSAXiagbJw", "isbns": book_isbn})
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": book_isbn})
     data = res.json()
     review_count = data["books"][0]["work_reviews_count"]
     average_score = data["books"][0]["average_rating"]
