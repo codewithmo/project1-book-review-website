@@ -1,37 +1,41 @@
-{% extends "layout.html" %}
-
-{% block titile %}
-KnowBooks|SearchResult
-{% endblock %}
-
-{% block body %}
+{% extends "layout.html" %} {% block titile %} KnowBooks|SearchResult {%
+endblock %} {% block body %}
 <h3>Here is your search result</h3>
 
-    <div class="bookscontainer">
-        <div class="col-5">
-        <h1> <u>Title</u> </h1>
-        </div>
-        <div class="col-5">
-        <h1> <u>Author</u> </h1>
-        </div>
-        <div class="col-2">
-        <h1> <u>Links</u> </h1>
-    </div>
-    </div>
+<div class="bookscontainer">
+  <div class="col-5">
+    <h1><u>Title</u></h1>
+  </div>
+  <div class="col-5">
+    <h1><u>Author</u></h1>
+  </div>
+  <div class="col-2">
+    <h1><u>Links</u></h1>
+  </div>
+</div>
+<hr style="border: 1px solid black;" />
 
-    {% for book_srch in books_srch %}
+{% for book_srch in books_srch %}
 
-    <div class="bookscontainer">
-                <div class="col-5">
-                  {{book_srch.title}}
-                </div>
-                <div class="col-5">
-                  {{book_srch.author}}
-                </div>
-                <div class="col-2">
-                  <a href="{{url_for('book', book_isbn=book_srch.isbn)}}"><button class="btn btn-outline-success my-2 my-sm-0"  type="submit" style="background-color:lightgray;" >Know more</button> </a>
-                </div>
-            </div>      
-    
-    {% endfor %}
-{% endblock %}
+<div class="bookscontainer">
+  <div class="col-5">
+    {{book_srch.title}}
+  </div>
+  <div class="col-5">
+    {{book_srch.author}}
+  </div>
+  <div class="col-2">
+    <a href="{{url_for('book', book_isbn=book_srch.isbn)}}"
+      ><button
+        class="btn btn-outline-success my-2 my-sm-0"
+        type="submit"
+        style="background-color: lightgray;"
+      >
+        Know more
+      </button>
+    </a>
+  </div>
+</div>
+<hr style="border: 1px solid black;" />
+
+{% endfor %} {% endblock %}
